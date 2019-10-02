@@ -1,0 +1,76 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+class toSetTheValue {
+	int a;
+	int b;
+	
+	toSetTheValue() {
+		a = 0;
+		b = 0;
+	}
+	
+	toSetTheValue(int i, int j) {
+		a = i;
+		b = j;
+	}
+}
+
+public class Merge_Interval {
+	public static void main(String[] args) throws java.lang.Exception {
+		ArrayList<toSetTheValue> z = new ArrayList<toSetTheValue>();
+		toSetTheValue l1 = new toSetTheValue(25, 30);
+		toSetTheValue l2 = new toSetTheValue(2, 19);
+		toSetTheValue l3 = new toSetTheValue(14, 23);
+		toSetTheValue l4 = new toSetTheValue(4, 8);
+		
+		z.add(l1);
+		z.add(l2);
+		z.add(l3);
+		z.add(l4);
+		
+		ArrayList<toSetTheValue> m = merge(z);
+		
+		for (toSetTheValue l : m) {
+			System.out.println(l.a + " " + l.b);
+		}
+	}
+
+	public static ArrayList<toSetTheValue> merge(ArrayList<toSetTheValue> intervals) {
+		if (intervals.size() == 0)
+			return intervals;
+		if (intervals.size() == 1)
+			return intervals;
+		
+		Collections.sort(intervals, new toSetTheValueComparator());
+		
+		toSetTheValue first = intervals.get(0);
+		int a = first.a;
+		int b = first.b;
+		
+		ArrayList<toSetTheValue> result = new ArrayList<toSetTheValue>();
+		
+		for (int l = 1; l < intervals.size(); l++) {
+			toSetTheValue current = intervals.get(l);
+			if(current.a <= b) {
+				b = Math.max(current.b, b);}
+				else {
+					result.add(new toSetTheValue(a,b));
+					a = current.a;
+					b = current.b;
+				}
+			}
+		
+			result.add(new toSetTheValue(a,b));
+			return result;
+	}
+}
+
+class toSetTheValueComparator implements Comparator<Object> {
+	public int compare(Object o1, Object o2) {
+		toSetTheValue l1 = (toSetTheValue) o1;
+		toSetTheValue l2 = (toSetTheValue) o2;
+		return l1.a - l2.a;
+	}
+}
